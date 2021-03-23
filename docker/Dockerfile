@@ -17,12 +17,12 @@
 # License along with iotagent-lora. If not, see http://www.gnu.org/licenses/.
 #
 
-ARG NODE_VERSION=8.16.1-slim
+ARG NODE_VERSION=15.12.0-slim
 FROM node:${NODE_VERSION}
-ARG GITHUB_ACCOUNT=Atos-Research-and-Innovation
+ARG GITHUB_ACCOUNT=pacs27
 ARG GITHUB_REPOSITORY=IoTagent-LoRaWAN
 ARG DOWNLOAD=latest
-ARG SOURCE_BRANCH=master
+ARG SOURCE_BRANCH=ngsi-ld
 
 # Copying Build time arguments to environment variables so they are persisted at run time and can be 
 # inspected within a running container.
@@ -30,9 +30,8 @@ ARG SOURCE_BRANCH=master
 
 ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT}
 ENV GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
-ENV DOWNLOAD=${DOWNLOAD}
+# ENV DOWNLOAD=${DOWNLOAD}
 
-MAINTAINER FIWARE IoTAgent Team. Atos Spain S.A
 
 # IMPORTANT: For production environments use Docker Secrets to protect values of the sensitive ENV 
 # variables defined below, by adding _FILE to the name of the relevant variable.
@@ -55,32 +54,10 @@ MAINTAINER FIWARE IoTAgent Team. Atos Spain S.A
 #
 # COPY . /opt/iotagent-lora/
 #
-RUN if [ "${DOWNLOAD}" = "latest" ] ; \
-	then \
-		RELEASE="${SOURCE_BRANCH}"; \
-		echo "INFO: Building Latest Development from ${SOURCE_BRANCH} branch."; \
-	elif [ "${DOWNLOAD}" = "stable" ]; \
-	then \
-		RELEASE=$(curl -s https://api.github.com/repos/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}"/releases/latest | grep 'tag_name' | cut -d\" -f4); \
-		echo "INFO: Building Latest Stable Release: ${RELEASE}"; \
-	else \
-	 	RELEASE="${DOWNLOAD}"; \
-	 	echo "INFO: Building Release: ${RELEASE}"; \
-	fi && \
-	RELEASE_CONCAT=$(echo "${RELEASE}" | tr / -); \
-	# Ensure that unzip is installed, and download the sources
-	apt-get update && \
-	apt-get install -y  --no-install-recommends unzip && \
-	wget --no-check-certificate -O source.zip https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}"/archive/"${RELEASE}".zip && \
-	unzip source.zip && \
-	rm source.zip && \
-	mv "${GITHUB_REPOSITORY}-${RELEASE_CONCAT}" /opt/iotagent-lora && \
-	# Remove unzip and clean apt cache
-	apt-get clean && \
-	apt-get remove -y unzip && \
-	apt-get -y autoremove
-
 WORKDIR /opt/iotagent-lora
+
+COPY . /opt/iotagent-lora
+
 
 RUN \
 	# Ensure that Git is installed prior to running npm install
