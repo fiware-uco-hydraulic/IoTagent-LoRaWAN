@@ -22,3 +22,63 @@ ngsiVersion: 'ld',
 2. Run from parent folder: `docker build -t iot-agent -f docker/Dockerfile .`
 3. Rename the imagen created with the repositoy name:`docker tag iot-agent:latest franciscopuig/iotagent-lorawan``
 4. Upload the docker image to Docker Hub: `docker push franciscopuig/iotagent-lorawan`
+
+### Context
+
+### Curl Request
+
+1. Provisioning a device
+
+```
+curl --location --request POST 'http://localhost:4041/iot/devices' \
+--header 'fiware-service: rabanales' \
+--header 'fiware-servicepath: /parcelaOlivar' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "devices": [
+        {
+           "device_id": "humidity001",
+           "entity_name": "urn:ngsi-ld:HumiditySensor:humidity001",
+            "entity_type": "HumiditySensor",
+            "attributes": [
+        {
+          "object_id": "h",
+          "name": "soilMoistureVwc",
+          "type": "Property",
+          "metadata": { "unitCode": {"type": "Text", "value": "5K" }}
+        }
+      ],
+                "static_attributes": [
+          {"name": "refParcel", "type": "Relationship","value": "urn:ngsi-ld:AgriParcel:001"}
+       ],
+       "internal_attributes": {
+          "lorawan": {
+            "application_server": {
+              "host": "eu.thethings.network",
+              "username": <app_id>,
+              "password": <ttn access key>,
+              "provider": "TTN"
+            },
+            "app_eui": <app_eui>,
+            "application_id": <app_id>,
+            "application_key": <app_key>,
+            "data_model": "application_server"
+          }
+      },
+      "protocol": "LORAJSON"
+
+        }
+    ]
+}'
+```
+
+2. TheThingsNetwork Payload:
+
+```
+function Decoder(bytes, port) {
+  switch(port) {
+    case 1:
+      return {soilMoistureVwc: 22}
+  }
+}
+```
