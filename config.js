@@ -49,7 +49,7 @@ config.iota = {
 		port: '1026',
 
 		/**
-		 * Version  NGSI and NGSI-LD
+		 * Version NGSI-LD
 		 */
 		ngsiVersion: 'ld',
 		jsonLdContext: 'https://raw.githubusercontent.com/pacs27/tutorial_fiware/main/datamodel.jsonld'
