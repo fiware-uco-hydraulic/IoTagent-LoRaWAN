@@ -18,10 +18,9 @@ ngsiVersion: 'ld',
 
 ### Docker-compose
 
-1. Create a docker hub repository
-2. Run from parent folder: `docker build -t iot-agent -f docker/Dockerfile .`
-3. Rename the imagen created with the repositoy name:`docker tag iot-agent:latest franciscopuig/iotagent-lorawan``
-4. Upload the docker image to Docker Hub: `docker push franciscopuig/iotagent-lorawan`
+1. Create a docker hub repository (name: iotagent-lorawan)
+2. Run from parent folder: `docker build -t franciscopuig/iotagent-lorawan -f docker/Dockerfile .`
+3. Upload the docker image to Docker Hub: `docker push franciscopuig/iotagent-lorawan`
 
 ### Context
 
