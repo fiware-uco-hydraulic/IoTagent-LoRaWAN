@@ -1,4 +1,4 @@
-# IOT-AGENT LORAWAN 1.1
+# IOT-AGENT LORAWAN 1.1.0
 
 This repository is forked from Atos-Research-and-Innovation/IoTagent-LoRaWAN
 
