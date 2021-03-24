@@ -4,6 +4,10 @@ This repository is forked from Atos-Research-and-Innovation/IoTagent-LoRaWAN
 
 The main objective is support NGSI-LD
 
+## command
+
+`node bin/iotagent-lora`
+
 ## Updates
 
 1. Update iotagent-node-lib to the latest version: `^2.15.0`
@@ -11,7 +15,7 @@ The main objective is support NGSI-LD
 
 ```
 ngsiVersion: 'ld',
-		jsonLdContext: <datamodel URL>,
+jsonLdContext: <datamodel URL>,
 ```
 
 2. Update docker image
